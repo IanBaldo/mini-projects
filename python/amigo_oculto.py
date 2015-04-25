@@ -1,5 +1,6 @@
 import types
 import random
+import re
 
 def createList(original_list):
 	if isinstance(original_list, types.ListType):
@@ -21,25 +22,23 @@ def createList(original_list):
 	else:
 		print("Something went wrong! Check your data.")
 
+# Checks if the order is ok (1 cicle)
 def testResult(alist):
 	current = alist[random.randrange(0,len(alist))]
 	first = current
-	print("--------------")
-	print(first.getName())
-	print("--------------")
 	counter = 0
 	while current.getFriend() != first.getName():
 		i = 0
 		counter += 1
 		while alist[i].getName() != current.getFriend():
-			print "%s = %s ???" % (current.getFriend(),alist[i].getName())
 			i += 1
 		current = alist[i]
-	print(counter)
 	if counter == len(alist)-1:
-		print("OK")
+		print("------ Result is OK! ")
+		return 1
 	else:
-		print("ERROR")
+		print("---------- ERROR")
+		return 0
 
 
 
@@ -71,16 +70,28 @@ class Person(object):
 
 
 alist = []
+wrong_email_counter = 0	# counts misspelled emails
+overall_data = 1		# Marks if the data is OK
 with open("example.txt","r") as afile:
 	
 	data = afile.readlines()
+	EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
 	for line in data:
 		word = line.split()
-		alist.append(Person(word[0],word[1]))
+		if len(word) == 2:
+			if EMAIL_REGEX.match(word[1]):
+				alist.append(Person(word[0],word[1]))
+			else:
+				wrong_email_counter += 1
+				overall_data = 0 # False
+		else:
+			overall_data = 0 # False
+			print("Something is wrong with the data")
 
-
-createList(alist)
-testResult(alist)
-for x in range(0,len(alist)):
-	print "%d %s -> %s" % (x,alist[x].getName(),alist[x].getFriend())
-
+if overall_data:
+	createList(alist)
+	if testResult(alist):
+		for x in range(0,len(alist)):
+			print "%d %s -> %s" % (x,alist[x].getName(),alist[x].getFriend())
+if wrong_email_counter > 0:
+	print("There is(are) %d email(s) misspelled" % wrong_email_counter)
