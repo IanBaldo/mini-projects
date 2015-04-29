@@ -30,11 +30,11 @@ def createList(original_list):
 		current = first
 		while len(new_list) > 0:
 			tmp = new_list[random.randrange(0,len(new_list))]		# chooses random person
-			current.setFriend(tmp.getName())	 			# set as friend
+			current.setFriend(tmp)	 			# set as friend
 			new_list.remove(tmp)						# removes from list
 			current = tmp							#update current person
 
-		current.setFriend(first.getName())
+		current.setFriend(first)
 	else:
 		print("Something went wrong! Check your data.")
 
@@ -43,12 +43,10 @@ def testResult(alist):
 	current = alist[random.randrange(0,len(alist))]
 	first = current
 	counter = 0
-	while current.getFriend() != first.getName():
-		i = 0
+	while current.getFriend() != first:
 		counter += 1
-		while alist[i].getName() != current.getFriend():
-			i += 1
-		current = alist[i]
+		current = current.getFriend()
+
 	if counter == len(alist)-1:
 		print("------ Result is OK! ")
 		return 1
@@ -106,8 +104,8 @@ with open("example.txt","r") as afile:
 if overall_data:
 	createList(alist)
 	if testResult(alist):
-		sendMail(fromaddr,username,password,alist)
-		#for x in range(0,len(alist)):
-			#print "%d %s -> %s" % (x,alist[x].getName(),alist[x].getFriend())
+		#sendMail(fromaddr,username,password,alist)
+		for x in range(0,len(alist)):
+			print "%d %s -> %s" % (x,alist[x].getName(),alist[x].getFriend().getName())
 if wrong_email_counter > 0:
 	print("There is(are) %d email(s) misspelled" % wrong_email_counter)
