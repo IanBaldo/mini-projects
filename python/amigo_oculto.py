@@ -1,6 +1,22 @@
 import types
 import random
 import re
+import smtplib
+
+fromaddr = ""	#auto.amigoocutlo@gmai.com
+
+username = ""
+password = ""
+
+def sendMail(fromaddr,username,password,alist):
+	server = smtplib.SMTP("smtp.gmail.com:587")
+	server.starttls()
+	server.login(username,password)
+	for w in range(0,len(alist)):
+		msg = "\nAmigo Oculto:"
+		msg = msg + "\nVoce tirou %s \n\nEssa mensagem e automatica e nao deve ser respondida." % alist[w].getFriend()
+		server.sendmail(fromaddr,alist[w].getEmail(),msg)
+	server.quit()
 
 def createList(original_list):
 	if isinstance(original_list, types.ListType):
@@ -39,7 +55,6 @@ def testResult(alist):
 	else:
 		print("---------- ERROR")
 		return 0
-
 
 
 class Person(object):
@@ -91,7 +106,8 @@ with open("example.txt","r") as afile:
 if overall_data:
 	createList(alist)
 	if testResult(alist):
-		for x in range(0,len(alist)):
-			print "%d %s -> %s" % (x,alist[x].getName(),alist[x].getFriend())
+		sendMail(fromaddr,username,password,alist)
+		#for x in range(0,len(alist)):
+			#print "%d %s -> %s" % (x,alist[x].getName(),alist[x].getFriend())
 if wrong_email_counter > 0:
 	print("There is(are) %d email(s) misspelled" % wrong_email_counter)
