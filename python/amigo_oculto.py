@@ -120,7 +120,9 @@ with open("example.txt","r") as afile:
 				wrong_email_counter += 1
 				overall_data = 0 # False
 		else:
-			overall_data = 0 # False
+			if len(word) != 0:
+				overall_data = 0 # False
+			
 
 if overall_data:
 	if checkData(alist):
@@ -128,8 +130,8 @@ if overall_data:
 		if testResult(alist):
 			#sendMail(fromaddr,username,password,alist)
 			for x in range(0,len(alist)):
-				#print "%d %s -> %s" % (x,alist[x].getName(),alist[x].getFriend().getName())
-				print "%s -> %s" % (alist[x].getName(),alist[x].getEmail())
+				print "%d %s -> %s" % (x,alist[x].getName(),alist[x].getFriend().getName())
+				#print "%s -> %s" % (alist[x].getName(),alist[x].getEmail())
 else:
 	print("Something is wrong with the data")
 if wrong_email_counter > 0:
