@@ -43,7 +43,7 @@ def testResult(alist):
 	current = alist[random.randrange(0,len(alist))]
 	first = current
 	counter = 0
-	while current.getFriend() != first:
+	while current.getFriend().getName() != first.getName():
 		counter += 1
 		current = current.getFriend()
 
@@ -54,6 +54,28 @@ def testResult(alist):
 		print("---------- ERROR")
 		return 0
 
+def checkData(alist):
+	if len(alist) < 2:
+		print ("---------- ERROR: You need more than 1 person to play")
+		return 0
+	for x in range(0,len(alist)):
+		n = 0	# number of times a name appears
+		for y in range(0,len(alist)):
+			if alist[x].getName() == alist[y].getName():
+				n += 1
+		if n > 1:
+			print("---------- ERROR: There are a few people with the same name.")
+			return 0
+
+	for x in range(0,len(alist)):
+		e = 0	# number of times am e-mail appears
+		for y in range(0,len(alist)):
+			if alist[x].getEmail() == alist[y].getEmail():
+				e += 1
+		if e > 1:
+			print("---------- ERROR: There are a few people with the same e-mail.")
+			return 0
+	return 1
 
 class Person(object):
 	__name =  ""
@@ -99,13 +121,16 @@ with open("example.txt","r") as afile:
 				overall_data = 0 # False
 		else:
 			overall_data = 0 # False
-			print("Something is wrong with the data")
 
 if overall_data:
-	createList(alist)
-	if testResult(alist):
-		#sendMail(fromaddr,username,password,alist)
-		for x in range(0,len(alist)):
-			print "%d %s -> %s" % (x,alist[x].getName(),alist[x].getFriend().getName())
+	if checkData(alist):
+		createList(alist)
+		if testResult(alist):
+			#sendMail(fromaddr,username,password,alist)
+			for x in range(0,len(alist)):
+				#print "%d %s -> %s" % (x,alist[x].getName(),alist[x].getFriend().getName())
+				print "%s -> %s" % (alist[x].getName(),alist[x].getEmail())
+else:
+	print("Something is wrong with the data")
 if wrong_email_counter > 0:
 	print("There is(are) %d email(s) misspelled" % wrong_email_counter)
