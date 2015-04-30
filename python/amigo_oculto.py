@@ -12,25 +12,25 @@ def sendMail(fromaddr,username,password,alist):
 	server = smtplib.SMTP("smtp.gmail.com:587")
 	server.starttls()
 	server.login(username,password)
-	for w in range(0,len(alist)):
+	for current in alist:
 		msg = "\nAmigo Oculto:"
-		msg = msg + "\nVoce tirou %s \n\nEssa mensagem e automatica e nao deve ser respondida." % alist[w].getFriend()
-		server.sendmail(fromaddr,alist[w].getEmail(),msg)
+		msg = msg + "\nVoce tirou %s \n\nEssa mensagem e automatica e nao deve ser respondida." % current.getFriend()
+		server.sendmail(fromaddr,current.getEmail(),msg)
 	server.quit()
 
 def createList(original_list):
 	if isinstance(original_list, types.ListType):
 		# Data is OK
 		new_list = []
-		for y in range(0,len(original_list)):
-			new_list.append(original_list[y])
+		for p in original_list:
+			new_list.append(p)
 
 		first = new_list[random.randrange(0,len(new_list))]
 		new_list.remove(first)
 		current = first
 		while len(new_list) > 0:
 			tmp = new_list[random.randrange(0,len(new_list))]		# chooses random person
-			current.setFriend(tmp)	 			# set as friend
+			current.setFriend(tmp)	 				# set as friend
 			new_list.remove(tmp)						# removes from list
 			current = tmp							#update current person
 
@@ -58,19 +58,19 @@ def checkData(alist):
 	if len(alist) < 2:
 		print ("---------- ERROR: You need more than 1 person to play")
 		return 0
-	for x in range(0,len(alist)):
+	for current in alist:
 		n = 0	# number of times a name appears
-		for y in range(0,len(alist)):
-			if alist[x].getName() == alist[y].getName():
+		for other in alist:
+			if current.getName() == other.getName():
 				n += 1
 		if n > 1:
 			print("---------- ERROR: There are a few people with the same name.")
 			return 0
 
-	for x in range(0,len(alist)):
+	for current in alist:
 		e = 0	# number of times am e-mail appears
-		for y in range(0,len(alist)):
-			if alist[x].getEmail() == alist[y].getEmail():
+		for other in alist:
+			if current.getEmail() == other.getEmail():
 				e += 1
 		if e > 1:
 			print("---------- ERROR: There are a few people with the same e-mail.")
@@ -129,9 +129,9 @@ if overall_data:
 		createList(alist)
 		if testResult(alist):
 			#sendMail(fromaddr,username,password,alist)
-			for x in range(0,len(alist)):
-				print "%d %s -> %s" % (x,alist[x].getName(),alist[x].getFriend().getName())
-				#print "%s -> %s" % (alist[x].getName(),alist[x].getEmail())
+			for current in alist:
+				print "%s -> %s" % (current.getName(),current.getFriend().getName())
+				#print "%s -> %s" % (current.getName(),current.getEmail())
 else:
 	print("Something is wrong with the data")
 if wrong_email_counter > 0:
