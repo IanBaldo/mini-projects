@@ -3,9 +3,9 @@ import random
 import re
 import smtplib
 
-fromaddr = ""	#auto.amigoocutlo@gmai.com
+fromaddr = "auto.amigooculto@gmail.com"	#auto.amigoocutlo@gmai.com
 
-username = ""
+username = "auto.amigooculto@gmail.com"
 password = ""
 
 def sendMail(fromaddr,username,password,alist):
@@ -14,7 +14,7 @@ def sendMail(fromaddr,username,password,alist):
 	server.login(username,password)
 	for current in alist:
 		msg = "\nAmigo Oculto:"
-		msg = msg + "\nVoce tirou %s \n\nEssa mensagem e automatica e nao deve ser respondida." % current.getFriend()
+		msg = msg + "\nVoce tirou %s \n\nEssa mensagem e automatica e nao deve ser respondida." % current.getFriend().getName()
 		server.sendmail(fromaddr,current.getEmail(),msg)
 	server.quit()
 
@@ -128,9 +128,9 @@ if overall_data:
 	if checkData(alist):
 		createList(alist)
 		if testResult(alist):
-			#sendMail(fromaddr,username,password,alist)
+			sendMail(fromaddr,username,password,alist)
 			for current in alist:
-				print "%s -> %s" % (current.getName(),current.getFriend().getName())
+				#print "%s -> %s" % (current.getName(),current.getFriend().getName())
 				#print "%s -> %s" % (current.getName(),current.getEmail())
 else:
 	print("Something is wrong with the data")
