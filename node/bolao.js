@@ -41,7 +41,7 @@ function getSeq() {
 		// console.log(num, i);
 	}
 
-	numbers.sort();
+	numbers.sort((a,b) => (a - b));
 
 	if (!isSeqNew(numbers))
 		getSeq();
